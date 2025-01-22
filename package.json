@@ -3,8 +3,8 @@
   "version": "1.0.4",
   "scripts": {
     "app:dev": "cd ./app && npm run dev",
-    "app:build": "cd ./app && npm run docker:build",
-    "browser:build": "cd ./browser && npm run docker:build",
+    "app:build": "cd ./app && npm run docker:build && docker compose up -d",
+    "browser:build": "cd ./browser && npm run docker:build && docker compose up -d",
     "build": "npm run app:build && npm run browser:build",
     "start": "cd .docker/compose && docker compose up -d",
     "release": "npx standard-version",

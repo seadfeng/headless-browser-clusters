@@ -70,6 +70,7 @@ class BrowserManager {
     for (let i = 0; i < maxRetries; i++) {
       const browserId = await redis.lpop(BROWSER_QUEUE);
       if (!browserId) {
+        console.info("browserId not found", maxRetries);
         await new Promise((resolve) => setTimeout(resolve, retryDelay));
         continue;
       }
@@ -102,7 +103,7 @@ class BrowserManager {
 
       if (isAvailable) {
         await redis.hset(BROWSER_STATUS, browserId, "busy");
-        browser = browserId;
+        return browserId;
       }
 
       await redis.rpush(BROWSER_QUEUE, browserId);

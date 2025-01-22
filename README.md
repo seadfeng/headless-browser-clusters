@@ -37,7 +37,7 @@ curl -X POST http://127.0.0.1:3010/api/v1/fetch \
 1. self host init
 
 ```bash
-ssh root@host "mkdir /home/deploy/app/headless-browser-clusters"
+ssh root@host "mkdir -p /home/deploy/app/headless-browser-clusters"
 rsync -avz .docker/compose root@host:/home/deploy/app/headless-browser-clusters
 ```
 

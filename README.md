@@ -5,17 +5,17 @@
 ```bash
 
 # app
-pnpm app:build
+npm run app:build
 
 # browser worker
-pnpm browser:build
+npm run browser:build
 
 ```
 
 ## Quick Start
 
 ```bash
-pnpm start
+npm run start
 ```
 
 
@@ -44,7 +44,7 @@ rsync -avz .docker/compose/ root@host:/home/deploy/app/headless-browser-clusters
 2. start
 
 ```bash
-ssh root@host "cd /home/deploy/app/headless-browser-clusters && pnpm start"
+ssh root@host "cd /home/deploy/app/headless-browser-clusters && npm run start"
 ```
 
 

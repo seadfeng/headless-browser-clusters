@@ -3,7 +3,7 @@
 # Pull the latest images
 docker compose pull
  
-docker compose up -d
+docker compose up -d -no-deps --build 
  
 
 # Clean up unused Docker resources

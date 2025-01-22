@@ -12,6 +12,7 @@ on:
     paths:
       - 'app/**'
       - 'app/package.json'
+      - '.github/workflows/app.yml'
 jobs:
   deploy:
     runs-on: ubuntu-latest

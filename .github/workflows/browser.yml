@@ -12,6 +12,7 @@ on:
     paths:
       - 'browser/**'
       - 'browser/package.json'
+      - '.github/workflows/browser.yml'
 jobs:
   deploy:
     runs-on: ubuntu-latest

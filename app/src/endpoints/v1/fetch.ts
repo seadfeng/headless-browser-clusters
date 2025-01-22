@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { BrowserManager, executeTask } from "lib/server";
-import { fetchParamsSchema } from "zod";
+import { fetchParamsSchema } from "zod-schema";
 
 export const fetchTask = async (req: Request, res: Response) => {
   try {

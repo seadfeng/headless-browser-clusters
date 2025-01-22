@@ -1,10 +1,13 @@
-无头浏览器管理
+#  Headless Browser Clusters
 
 ## build
 
 ```bash
-## 逐个打包
-pnpm api:build
+
+# express
+pnpm express:build
+
+# browser worker
 pnpm browser:build
 
 ## 一起打包

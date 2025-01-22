@@ -2,10 +2,10 @@
   "name": "headless-browser-clusters",
   "version": "1.0.0",
   "scripts": {
-    "api:dev": "cd ./api && npm run dev",
-    "api:build": "cd ./api && npm run docker:build",
+    "app:dev": "cd ./app && npm run dev",
+    "app:build": "cd ./app && npm run docker:build",
     "browser:build": "cd ./browser && npm run docker:build",
-    "build": "npm run api:build && npm run browser:build",
+    "build": "npm run app:build && npm run browser:build",
     "start": "cd .docker/compose && docker compose up -d",
     "release": "npx standard-version",
     "publish:release": "git push --follow-tags origin main"

@@ -7,7 +7,7 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "inlineSourceMap": false,
-    "baseUrl": "./app",
+    "baseUrl": "./src",
     "lib": ["esnext"],
     "listEmittedFiles": false,
     "listFiles": false,
@@ -24,9 +24,9 @@
     "module": "CommonJS",
     "types": ["@types/node", "jest"],
     "paths": {
-      "@/*": ["./app/*"]
-    },
+      "@/*": ["./src/*"]
+    }
   },
   "exclude": ["node_modules", "dist", "__tests__"],
-  "include": ["app/**/*.ts"]
+  "include": ["./src/**/*.ts"]
 }

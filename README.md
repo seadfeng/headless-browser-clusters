@@ -4,8 +4,8 @@
 
 ```bash
 
-# express
-pnpm express:build
+# app
+pnpm app:build
 
 # browser worker
 pnpm browser:build

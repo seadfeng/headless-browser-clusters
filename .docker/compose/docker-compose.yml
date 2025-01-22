@@ -5,12 +5,12 @@ services:
     volumes:
       - ./redis-data:/data
     restart: unless-stopped
-  api:
+  app:
     depends_on:
       - redis
     extends:
       file: services.yml
-      service: api
+      service: app
     ports:
       - "127.0.0.1:3100:3000"
 

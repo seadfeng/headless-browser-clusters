@@ -1,9 +1,8 @@
 import debug from "debug";
-import dotenv from "dotenv";
+import "dotenv/config";
 import http from "http";
 import { AddressInfo } from "net";
 import app from "./app";
-dotenv.config();
 
 const serverDebug = debug("starter:server");
 let serverStarted = false;

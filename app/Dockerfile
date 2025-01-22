@@ -1,8 +1,12 @@
 FROM node:18-slim
 
-WORKDIR /app 
+WORKDIR /app
+
+COPY package*.json ./
 
 COPY ./dist ./dist
+
+RUN npm install
 
 ENV HOST=0.0.0.0
 ENV PORT=3000

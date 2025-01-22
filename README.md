@@ -38,7 +38,7 @@ curl -X POST http://127.0.0.1:3010/api/v1/fetch \
 
 ```bash
 ssh root@host "mkdir -p /home/deploy/app/headless-browser-clusters"
-rsync -avz .docker/compose root@host:/home/deploy/app/headless-browser-clusters
+rsync -avz .docker/compose/ root@host:/home/deploy/app/headless-browser-clusters
 ```
 
 2. start

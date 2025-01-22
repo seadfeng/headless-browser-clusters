@@ -22,7 +22,7 @@ docker compose up
 ### test data for post
  
 
-```json
+```bash
 curl -X POST http://127.0.0.1:3010/api/v1/fetch \
      -H "Content-Type: application/json" \
      -H "X-Api-key: your_api_key" \

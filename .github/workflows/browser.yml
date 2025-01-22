@@ -68,5 +68,5 @@ jobs:
 
       - name: Docker Pull && Restart App
         run: |
-          ssh self_host 'cd /home/deploy/app/playwright && sh update_and_restart.sh'
+          ssh self_host 'cd /home/deploy/app/headless-browser-clusters && sh update_and_restart.sh'
  

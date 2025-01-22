@@ -1,6 +1,6 @@
 services:
   browser-node:
-    image: seadfeng/playwright-browser-api
+    image: seadfeng/playwright-browser-app
     env_file: .env
     restart: unless-stopped
     deploy:

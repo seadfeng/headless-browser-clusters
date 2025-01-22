@@ -66,10 +66,11 @@ function onError(error: NodeJS.ErrnoException, port: string | number): void {
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case "EACCES":
+    case "EACCES": {
       console.error(bind + " requires elevated privileges");
       process.exit(1);
-    case "EADDRINUSE":
+    }
+    case "EADDRINUSE": {
       console.error(bind + " is already in use");
       const nextPort = (typeof port === "number" ? port : parseInt(port)) + 1;
       console.log(
@@ -77,6 +78,7 @@ function onError(error: NodeJS.ErrnoException, port: string | number): void {
       );
       startServer(nextPort);
       break;
+    }
     default:
       throw error;
   }

@@ -22,7 +22,8 @@
     ],
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "eslint@typescript-eslint/no-empty-object-type": "off"
+    "eslint@typescript-eslint/no-empty-object-type": "off",
+    "no-fallthrough": "off"
   },
   "parserOptions": {
     "ecmaVersion": "latest",

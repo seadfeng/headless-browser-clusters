@@ -2,7 +2,7 @@
 
 ## locale build
 
-# seadfeng/playwright-browser-api
+# seadfeng/playwright-browser-app
 
 VERSION=$(node -p "require('./package.json').version")
 APP=$(node -p "require('./package.json').name")

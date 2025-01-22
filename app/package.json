@@ -1,5 +1,5 @@
 {
-  "name": "browser-api",
+  "name": "browser-app",
   "version": "1.0.0",
   "scripts": {
     "dev": "npx nodemon",

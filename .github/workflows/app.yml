@@ -34,14 +34,14 @@ jobs:
         id: docker_buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Docker Build browser-api
+      - name: Docker Build browser-app
         run: |
           echo ${{ secrets.DOCKER_LOGIN }} | docker login -u ${{ github.actor }} --password-stdin
           docker buildx create --use
           docker buildx inspect --bootstrap
 
-          VERSION=$(node -p "require('./api/package.json').version")
-          APP=$(node -p "require('./api/package.json').name")
+          VERSION=$(node -p "require('./app/package.json').version")
+          APP=$(node -p "require('./app/package.json').name")
 
           echo "Build: ${APP}.${VERSION}" 
 
@@ -51,8 +51,8 @@ jobs:
             --build-arg VERSION=$VERSION \
             -t ${{ github.actor }}/playwright-${APP}:$VERSION \
             -t ${{ github.actor }}/playwright-${APP}:latest \
-            -f ./api/Dockerfile \
-            ./api
+            -f ./app/Dockerfile \
+            ./app
 
           echo "${{ github.actor }}/${APP}:${VERSION}" 
           echo "${{ github.actor }}/${APP}:latest"

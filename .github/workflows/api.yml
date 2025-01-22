@@ -20,7 +20,7 @@ jobs:
       url: ${{ vars.DEPOLY_URL }}
     env:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      HOST: ${{ vars.HOST }}
+      HOST: ${{ secrets.HOST }}
       SSH_DP_USER: ${{ secrets.SSH_DP_USER }}
     steps:
       - name: Checkout Repository

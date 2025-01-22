@@ -1,0 +1,59 @@
+
+services:
+  redis:
+    image: redis:alpine
+    volumes:
+      - ./redis-data:/data
+    restart: unless-stopped
+  api:
+    depends_on:
+      - redis
+    extends:
+      file: services.yml
+      service: api
+    ports:
+      - "127.0.0.1:3100:3000"
+
+  browser-node-1:
+    depends_on:
+      - redis
+    environment:
+      - HOST_NAME=browser-node-1
+    ports:
+      - "127.0.0.1:9701:8080"
+    extends:
+      file: services.yml
+      service: browser-node 
+
+  browser-node-2:
+    depends_on:
+      - redis
+    environment:
+      - HOST_NAME=browser-node-2
+    ports:
+      - "127.0.0.1:9702:8080"
+    extends:
+      file: services.yml
+      service: browser-node 
+
+  browser-node-3:
+    depends_on:
+      - redis
+    environment:
+      - HOST_NAME=browser-node-3
+    ports:
+      - "127.0.0.1:9703:8080"
+    extends:
+      file: services.yml
+      service: browser-node
+
+  browser-node-4:
+    depends_on:
+      - redis
+    environment:
+      - HOST_NAME=browser-node-4
+    ports:
+      - "127.0.0.1:9704:8080"
+    extends:
+      file: services.yml
+      service: browser-node

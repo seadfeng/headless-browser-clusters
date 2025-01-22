@@ -1,0 +1,30 @@
+{
+  "extends": [
+    "prettier",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "prettier"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {},
+      {
+        "semi": true,
+        "singleQuote": false,
+        "parser": "flow",
+        "tabWidth": 2,
+        "useTabs": false,
+        "quoteProps": "preserve",
+        "usePrettierrc": true
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "eslint@typescript-eslint/no-empty-object-type": "off"
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  }
+}

@@ -1,0 +1,77 @@
+# This workflow uses actions that are not certified by GitHub.  They are
+# provided by a third-party and are governed by separate terms of service,
+# privacy policy, and support documentation.
+#
+# This workflow will install a prebuilt Ruby version, install dependencies, and
+# run tests and linters.
+name: "Browser Worker Deploy"
+on:
+  release:
+    types:
+      - published
+    paths:
+      - 'browser/**'
+      - 'browser/package.json'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      HOST: ${{ vars.HOST }}
+      SSH_DP_USER: ${{ secrets.SSH_DP_USER }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Setup Docker Buildx
+        id: docker_buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker Build browser-worker
+        run: |
+          echo ${{ secrets.DOCKER_LOGIN }} | docker login -u ${{ github.actor }} --password-stdin
+          docker buildx create --use
+          docker buildx inspect --bootstrap
+    
+          VERSION=$(node -p "require('./browser/package.json').version")
+          APP=$(node -p "require('./browser/package.json').name")
+
+          echo "Build: ${APP}.${VERSION}" 
+
+          docker buildx build \
+            --push \
+            --platform linux/amd64,linux/arm64/v8 \
+            --build-arg VERSION=$VERSION \
+            -t ${{ github.actor }}/playwright-${APP}:$VERSION \
+            -t ${{ github.actor }}/playwright-${APP}:latest \
+            -f ./browser/Dockerfile \
+            ./browser
+
+          echo "${{ github.actor }}/playwright-${APP}:${VERSION}" 
+          echo "${{ github.actor }}/playwright-${APP}:latest"
+
+      - name: Configure SSH FOR self_host
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          eval "$(ssh-agent)"
+          ssh-add ~/.ssh/id_rsa
+          cat >>~/.ssh/config <<END
+          Host self_host
+            HostName $HOST
+            User $SSH_DP_USER
+            IdentityFile ~/.ssh/id_rsa
+            StrictHostKeyChecking no
+          END
+
+      - name: Docker Pull && Restart App
+        run: |
+          ssh self_host 'cd /home/deploy/app/playwright && sh update_and_restart.sh'
+ 

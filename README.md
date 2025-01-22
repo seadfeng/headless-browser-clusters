@@ -1,6 +1,6 @@
 #  Headless Browser Clusters
 
-## build
+## Local Build
 
 ```bash
 
@@ -10,32 +10,43 @@ pnpm express:build
 # browser worker
 pnpm browser:build
 
-## 一起打包
-pnpm build
 ```
 
-## start
+## Quick Start
+
 ```bash
-docker compose down
 docker compose up
 ```
 
+
+### test data for post
+ 
+
 ```json
-{ 
-  "url": "https://api.ipify.org/?format=jsonp" 
-} 
+curl -X POST http://127.0.0.1:3010/api/v1/fetch \
+     -H "Content-Type: application/json" \
+     -H "X-Api-key: your_api_key" \
+     -d '{ 
+           "url": "https://api.ipify.org/?format=jsonp" 
+         }'
 ```
 
 
 ## Deploy
 
-1.初次安装
+1. self host init
 
 ```bash
-ssh root@host "mkdir /home/deploy/app/playwright"
-rsync -avz .docker/compose root@host:/home/deploy/app/playwright
+ssh root@host "mkdir /home/deploy/app/headless-browser-clusters"
+rsync -avz .docker/compose root@host:/home/deploy/app/headless-browser-clusters
 ```
 
-2.git发布版本
+2. start
+
+```bash
+ssh root@host "cd /home/deploy/app/headless-browser-clusters && pnpm start"
+```
+
+
 
 

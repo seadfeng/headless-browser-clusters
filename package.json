@@ -8,7 +8,7 @@
     "build": "npm run app:build && npm run browser:build",
     "start": "cd .docker/compose && docker compose up -d",
     "release": "npx standard-version",
-    "publish:release": "git push --follow-tags origin main"
+    "publish:release": "npm run release && git push --follow-tags origin main"
   },
   "devDependencies": {
     "standard-version": "^9.5.0"

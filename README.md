@@ -19,7 +19,7 @@ docker compose up
 ```
 
 
-### test data for post
+### curl test
  
 
 ```bash

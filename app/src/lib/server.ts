@@ -1,7 +1,9 @@
 import { HeaderGenerator } from "header-generator";
 import { IncomingMessage, ServerResponse } from "http";
 import Redis from "ioredis";
-import { Browser, chromium } from "playwright";
+import { Browser, BrowserContextOptions, chromium } from "playwright";
+import { needBlocked } from "./blocked";
+import { googleRecaptcha } from "./google";
 
 const BROWSER_QUEUE = "browser_queue";
 const BROWSER_STATUS = "browser_status";
@@ -34,7 +36,11 @@ function sanitizeHeaders(headers: Headers): Headers {
       const req = Object.create(IncomingMessage.prototype);
       const testResponse = new ServerResponse(req as IncomingMessage);
       testResponse.setHeader(key, value);
-      sanitized[key] = value;
+      const ignoredHeaders = ["content-encoding", "transfer-encoding"];
+
+      if (!ignoredHeaders.includes(key)) {
+        sanitized[key] = value;
+      }
     } catch (e) {
       // console.warn(`Skipping invalid header ${key}: ${value}`);
     }
@@ -146,9 +152,8 @@ async function executeTask({
       locales: [locale],
     });
 
-    const contextOptions: any = {
+    const contextOptions: BrowserContextOptions = {
       locale,
-      acceptLanguage: headers["accept-language"],
       viewport: { width: 1920, height: 1080 },
       userAgent: headers["user-agent"],
     };
@@ -161,6 +166,7 @@ async function executeTask({
 
     const context = await browser.newContext(contextOptions);
     const page = await context.newPage();
+    await needBlocked(page);
 
     try {
       const response = await page.goto(url, {
@@ -181,55 +187,18 @@ async function executeTask({
 
       const responseHeaders = sanitizeHeaders(response.headers());
 
-      if (recaptchaCount > 0) {
-        console.info("Recaptcha", "Try to pass");
-        const iframe = page.locator('iframe[title="reCAPTCHA"]');
-        const frameLocator = iframe.contentFrame();
-        const checkbox = frameLocator.locator(".recaptcha-checkbox");
-        console.info("checkbox count", await checkbox.count());
-        if ((await checkbox.count()) > 0) {
-          await checkbox.waitFor({ state: "visible" });
-          await checkbox.scrollIntoViewIfNeeded();
+      if (recaptchaCount > 0 && (await googleRecaptcha(page))) {
+        const [html] = await Promise.all([page.content()]);
 
-          await checkbox.click();
-          await frameLocator
-            .locator(".recaptcha-checkbox-loading")
-            .waitFor({ state: "visible" });
-          await frameLocator
-            .locator(".recaptcha-checkbox-loading")
-            .waitFor({ state: "detached" });
-          const imageselect = page.locator(".g-recaptcha-bubble-arrow"); // iframe #rc-imageselect
-          if ((await imageselect.count()) > 0) {
-            console.info("Recaptcha imageselect");
-            const [html] = await Promise.all([
-              frameLocator.locator("html").innerHTML(),
-            ]);
-            return {
-              status: 429,
-              html,
-              headers,
-              url: response.url(),
-            };
-          } else {
-            console.info("no imageselect");
-          }
-
-          const [html, recaptchaCount] = await Promise.all([
-            page.content(),
-            page.locator("#recaptcha").count(),
-          ]);
-
-          const endTime = Date.now();
-          const executionTime = endTime - startTime;
-          console.info("Recaptcha loading count", recaptchaCount);
-          return {
-            status,
-            html: `<!DOCTYPE html>\n\n<html>${html}</html>`,
-            executionTime: `${executionTime / 1000} s`,
-            headers,
-            url: response.url(),
-          };
-        }
+        const endTime = Date.now();
+        const executionTime = endTime - startTime;
+        return {
+          status,
+          html: `<!DOCTYPE html>\n\n<html>${html}</html>`,
+          executionTime: `${executionTime / 1000} s`,
+          headers,
+          url: response.url(),
+        };
       }
 
       const endTime = Date.now();

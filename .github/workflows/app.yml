@@ -4,14 +4,14 @@
 #
 # This workflow will install a prebuilt Ruby version, install dependencies, and
 # run tests and linters.
-name: "Express API Deploy"
+name: "Express App Deploy"
 on:
   release:
     types:
       - published
     paths:
-      - 'api/**'
-      - 'api/package.json'
+      - 'app/**'
+      - 'app/package.json'
 jobs:
   deploy:
     runs-on: ubuntu-latest

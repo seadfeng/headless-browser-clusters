@@ -17,5 +17,5 @@ docker buildx build \
   -f ./Dockerfile \
   .
 
-echo "seadfeng/${APP}:${VERSION}" 
-echo "seadfeng/${APP}:latest"
+echo "seadfeng/playwright-${APP}:${VERSION}" 
+echo "seadfeng/playwright-${APP}:latest"

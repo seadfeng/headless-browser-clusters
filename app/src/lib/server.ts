@@ -66,7 +66,6 @@ class BrowserManager {
     retryDelay: number = 1000,
   ): Promise<string | null> {
     const processedBrowsers = new Set<string>();
-    let browser: string | null;
     for (let i = 0; i < maxRetries; i++) {
       const browserId = await redis.lpop(BROWSER_QUEUE);
       if (!browserId) {
@@ -87,7 +86,7 @@ class BrowserManager {
       ]);
 
       const isAlive =
-        lastHeartbeat && Date.now() - parseInt(lastHeartbeat) <= 10000;
+        lastHeartbeat && (Date.now() - Number(lastHeartbeat)) / 1000 <= 10000;
       const isAvailable = status !== "busy";
 
       if (!isAlive) {
@@ -102,6 +101,7 @@ class BrowserManager {
       }
 
       if (isAvailable) {
+        console.log(`Browser ${browserId} found`);
         await redis.hset(BROWSER_STATUS, browserId, "busy");
         return browserId;
       }

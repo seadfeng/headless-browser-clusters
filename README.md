@@ -15,7 +15,7 @@ pnpm browser:build
 ## Quick Start
 
 ```bash
-docker compose up
+pnpm start
 ```
 
 

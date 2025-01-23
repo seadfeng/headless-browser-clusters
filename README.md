@@ -15,7 +15,12 @@ npm run browser:build
 ## Quick Start
 
 ```bash
+
 npm run start
+
+# or
+
+cd .docker/compose && docker compose up -d
 ```
 
 

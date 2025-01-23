@@ -27,7 +27,8 @@ curl -X POST http://127.0.0.1:3010/api/v1/fetch \
      -H "Content-Type: application/json" \
      -H "X-Api-key: your_api_key" \
      -d '{ 
-           "url": "https://api.ipify.org/?format=jsonp" 
+           "url": "https://api.ipify.org/?format=jsonp",
+           "proxy": "http://user:pass@127.0.0.1:8080"
          }'
 ```
 

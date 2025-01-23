@@ -161,7 +161,9 @@ async function executeTask({
     if (proxy) {
       const { password, username, protocol, host } = new URL(proxy);
       const server = `${protocol}//${host}`;
-      contextOptions.proxy = { server, username, password };
+      contextOptions.proxy = { server };
+      if (username) contextOptions.proxy.username = username;
+      if (password) contextOptions.proxy.password = password;
     }
 
     const context = await browser.newContext(contextOptions);

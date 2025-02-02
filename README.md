@@ -3,6 +3,9 @@
 ## Local Development
 
 ```bash
+# create .env
+cp ./app/.env.example ./app/.env
+# start
 npm run app:dev
 ```
 

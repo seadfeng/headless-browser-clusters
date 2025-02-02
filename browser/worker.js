@@ -47,8 +47,7 @@ async function startWorker() {
 
       // Anti-detection settings
       '--disable-blink-features=AutomationControlled',  // Hide automation flags
-      '--disable-features=IsolateOrigins,site-per-process', // Disable site isolation
-      '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',  // Set modern UA
+      // '--disable-features=IsolateOrigins,site-per-process', // Disable site isolation
 
       // Additional performance tweaks
       '--disable-web-security',      // Disable web security for testing

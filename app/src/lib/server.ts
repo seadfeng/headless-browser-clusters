@@ -163,7 +163,7 @@ async function executeTask({
     const contextOptions: BrowserContextOptions = {
       locale,
       viewport: { width: 1920, height: 1080 },
-      deviceScaleFactor: 1,
+      // deviceScaleFactor: 1,
       userAgent: headers["user-agent"],
     };
 
@@ -178,28 +178,6 @@ async function executeTask({
     const context = await browser.newContext(contextOptions);
     const page = await context.newPage();
     // await needBlocked(page);
-
-    // Inject scripts to bypass automation detection
-    // await page.addInitScript(() => {
-    //   // Override navigator properties
-    //   Object.defineProperty(navigator, "webdriver", { get: () => undefined });
-    //   Object.defineProperty(navigator, "plugins", {
-    //     get: () => [1, 2, 3, 4, 5],
-    //   });
-
-    //   // Add chrome object properties
-    //   window.chrome = {
-    //     runtime: {},
-    //     // Add other chrome properties as needed
-    //   };
-
-    //   // Override permissions API
-    //   const originalQuery = window.navigator.permissions.query;
-    //   window.navigator.permissions.query = (parameters) =>
-    //     parameters.name === "notifications"
-    //       ? Promise.resolve({ state: Notification.permission })
-    //       : originalQuery(parameters);
-    // });
 
     try {
       const response = await page.goto(url, {

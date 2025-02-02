@@ -2,8 +2,6 @@ services:
   browser-node:
     image: seadfeng/playwright-browser-worker
     env_file: .env
-    environment:
-      - DISPLAY=:99
     restart: unless-stopped
     deploy:
       resources:

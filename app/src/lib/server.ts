@@ -2,8 +2,7 @@ import { BROWSERS } from "dev";
 import { HeaderGenerator } from "header-generator";
 import { IncomingMessage, ServerResponse } from "http";
 import Redis from "ioredis";
-import { Browser, BrowserContextOptions, chromium } from "playwright";
-import { needBlocked } from "./blocked";
+import { Browser, BrowserContextOptions, chromium, Cookie } from "playwright";
 import { googleRecaptcha } from "./google";
 
 const BROWSER_QUEUE = "browser_queue";
@@ -24,6 +23,7 @@ interface ExecuteTaskOptions {
 interface TaskResult {
   status: number;
   html: string;
+  cookies?: Cookie[];
   executionTime?: string;
   headers?: Headers;
   url?: string;
@@ -175,7 +175,7 @@ async function executeTask({
 
     const context = await browser.newContext(contextOptions);
     const page = await context.newPage();
-    await needBlocked(page);
+    // await needBlocked(page);
 
     try {
       const response = await page.goto(url, {
@@ -186,8 +186,6 @@ async function executeTask({
         throw new Error("No response received");
       }
 
-      await page.waitForLoadState("networkidle");
-
       const [status, html, recaptchaCount] = await Promise.all([
         response.status(),
         page.content(),
@@ -195,6 +193,7 @@ async function executeTask({
       ]);
 
       const responseHeaders = sanitizeHeaders(response.headers());
+      const cookies = await context.cookies();
 
       if (recaptchaCount > 0 && (await googleRecaptcha(page))) {
         const [html] = await Promise.all([page.content()]);
@@ -205,8 +204,9 @@ async function executeTask({
           status,
           html: `<!DOCTYPE html>\n\n<html>${html}</html>`,
           executionTime: `${executionTime / 1000} s`,
+          url: page.url(),
+          cookies,
           headers,
-          url: response.url(),
         };
       }
 
@@ -226,7 +226,8 @@ async function executeTask({
         html,
         executionTime: `${executionTime / 1000} s`,
         headers: responseHeaders,
-        url: response.url(),
+        cookies,
+        url: page.url(),
       };
     } finally {
       await page.close();

@@ -6,8 +6,7 @@
     "start": "npx nodemon",
     "docker:build": "sh bin/docker-build.sh",
     "build": "npx tsup src --clean --format cjs --env.NODE_ENV production && npx tsx copy-files.ts",
-    "test": "dotenv -c -- npx jest",
-    "release": "npx standard-version"
+    "test": "dotenv -c -- npx jest"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
@@ -36,7 +35,6 @@
     "jest": "^29.7.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.3.3",
-    "standard-version": "^9.5.0",
     "ts-jest": "^29.2.3",
     "tsup": "^8.2.0",
     "tsx": "^4.19.2"

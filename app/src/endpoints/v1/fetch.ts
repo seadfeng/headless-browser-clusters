@@ -25,6 +25,7 @@ export const fetchTask = async (req: Request, res: Response) => {
 
       status = result.status;
       html = result.html;
+      // return res.status(status).json(result);
     } catch (error) {
       console.error("Task execution failed:", error);
       status = 500;

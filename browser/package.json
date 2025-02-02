@@ -1,15 +1,11 @@
 {
   "name": "browser-worker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
-    "docker:build": "sh bin/docker-build.sh",
-    "release": "npx standard-version"
+    "docker:build": "sh bin/docker-build.sh"
   },
   "dependencies": {
     "ioredis": "^5.3.2",
     "playwright": "^1.49.1"
-  },
-  "devDependencies": {
-    "standard-version": "^9.5.0"
   }
 }

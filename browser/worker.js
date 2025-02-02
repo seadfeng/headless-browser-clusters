@@ -46,7 +46,7 @@ async function startWorker() {
       '--disable-gpu',              // Disable GPU hardware acceleration
       // '--hide-scrollbars',          // Hide scrollbars
     ],
-    headless: false,                // Run in headless mode
+    headless: true,                 // Run in headless mode
     handleSIGINT: false,            // Manually handle process signals
     handleSIGTERM: false,
     handleSIGHUP: false,

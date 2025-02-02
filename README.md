@@ -1,5 +1,11 @@
 #  Headless Browser Clusters
 
+## Local Development
+
+```bash
+npm run app:dev
+```
+
 ## Local Build
 
 ```bash
@@ -12,7 +18,7 @@ npm run browser:build
 
 ```
 
-## Quick Start
+## Docker Quick Start
 
 ```bash
 

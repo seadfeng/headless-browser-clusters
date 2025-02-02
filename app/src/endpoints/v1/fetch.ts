@@ -9,7 +9,6 @@ export const fetchTask = async (req: Request, res: Response) => {
     let browserId: string | null = null;
     let status = 500;
     let html = "";
-
     try {
       browserId = await BrowserManager.getAvailableBrowser();
       if (!browserId) {

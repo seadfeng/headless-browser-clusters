@@ -1,3 +1,4 @@
+import { BROWSERS } from "dev";
 import { HeaderGenerator } from "header-generator";
 import { IncomingMessage, ServerResponse } from "http";
 import Redis from "ioredis";
@@ -57,7 +58,13 @@ class BrowserManager {
       if (!wsEndpoint) {
         throw new Error(`No websocket endpoint found for browser ${browserId}`);
       }
-      const containerWsEndpoint = wsEndpoint.replace("0.0.0.0", "browser-node");
+      const hostName = browserId.split("_")[1] as keyof typeof BROWSERS;
+      console.log("hostName", hostName);
+      console.log("wsEndpoint", wsEndpoint);
+      const containerWsEndpoint =
+        process.env.NODE_ENV !== "production"
+          ? wsEndpoint.replace(/\/.*:8080/, `/${BROWSERS[hostName]}`)
+          : wsEndpoint;
       const browser = await chromium.connect({
         wsEndpoint: containerWsEndpoint,
       });
@@ -154,7 +161,7 @@ async function executeTask({
 
     const contextOptions: BrowserContextOptions = {
       locale,
-      viewport: { width: 1920, height: 1080 },
+      viewport: { width: 1280, height: 960 },
       userAgent: headers["user-agent"],
     };
 

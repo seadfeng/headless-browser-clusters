@@ -44,9 +44,9 @@ async function startWorker() {
       '--disable-setuid-sandbox',   // Disable setuid sandbox
       '--disable-dev-shm-usage',    // Overcome limited shared memory in containers
       '--disable-gpu',              // Disable GPU hardware acceleration
-      '--hide-scrollbars',          // Hide scrollbars
+      // '--hide-scrollbars',          // Hide scrollbars
     ],
-    headless: true,                 // Run in headless mode
+    headless: false,                // Run in headless mode
     handleSIGINT: false,            // Manually handle process signals
     handleSIGTERM: false,
     handleSIGHUP: false,

@@ -5,6 +5,8 @@ services:
     volumes:
       - ./redis-data:/data
     restart: unless-stopped
+    ports:
+      - "127.0.0.1:6380:6379"
   app:
     depends_on:
       - redis

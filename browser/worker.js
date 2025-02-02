@@ -44,7 +44,17 @@ async function startWorker() {
       '--disable-setuid-sandbox',   // Disable setuid sandbox
       '--disable-dev-shm-usage',    // Overcome limited shared memory in containers
       '--disable-gpu',              // Disable GPU hardware acceleration
-      // '--hide-scrollbars',          // Hide scrollbars
+
+      // Anti-detection settings
+      '--disable-blink-features=AutomationControlled',  // Hide automation flags
+      '--disable-features=IsolateOrigins,site-per-process', // Disable site isolation
+      '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',  // Set modern UA
+
+      // Additional performance tweaks
+      '--disable-web-security',      // Disable web security for testing
+      '--disable-notifications',     // Disable browser notifications
+      '--ignore-certificate-errors', // Ignore SSL/TLS errors
+      '--window-size=1920,1080',    // Set standard window size
     ],
     headless: true,                 // Run in headless mode
     handleSIGINT: false,            // Manually handle process signals

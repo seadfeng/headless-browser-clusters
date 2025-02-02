@@ -1,6 +1,6 @@
 {
   "name": "headless-browser-clusters",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "scripts": {
     "app:dev": "npm run start && cd ./app && npm run dev",
     "app:build": "cd ./app && npm run docker:build",

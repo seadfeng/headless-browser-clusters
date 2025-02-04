@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { BrowserManager, executeTask } from "lib/server";
+import { BrowserManager } from "lib/browser-manager";
+import { executeTask } from "lib/server";
 import { fetchParamsSchema } from "zod-schema";
 
 export const fetchTask = async (req: Request, res: Response) => {
@@ -14,8 +15,9 @@ export const fetchTask = async (req: Request, res: Response) => {
       if (!browserId) {
         return res.status(503).send("browserId not found");
       }
+      const browser = await BrowserManager.getBrowser(browserId);
 
-      const result = await executeTask({ url, browserId, locale, proxy });
+      const result = await executeTask({ url, browser, locale, proxy });
 
       if (result.headers) {
         Object.entries(result.headers).forEach(([key, value]) => {
@@ -25,6 +27,7 @@ export const fetchTask = async (req: Request, res: Response) => {
 
       status = result.status;
       html = result.html;
+
       // return res.status(status).json(result);
     } catch (error) {
       console.error("Task execution failed:", error);

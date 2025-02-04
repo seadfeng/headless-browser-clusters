@@ -27,3 +27,17 @@ export const needBlocked = async (page: Page) => {
     route.continue();
   });
 };
+
+export const navigationBlocked = async (page: Page) => {
+  await page.route("**/*", async (route) => {
+    if (
+      route.request().isNavigationRequest() &&
+      route.request().url().includes("sei")
+    ) {
+      console.log("Blocked navigation to:", route.request().url());
+      await route.abort();
+    } else {
+      await route.continue();
+    }
+  });
+};

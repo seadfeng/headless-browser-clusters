@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.16](https://github.com/seadfeng/headless-browser-clusters/compare/v1.0.15...v1.0.16) (2025-02-22)
+
+
+### Bug Fixes
+
+* Cannot find module @rollup/rollup-linux-arm64-gnu ([7119a26](https://github.com/seadfeng/headless-browser-clusters/commit/7119a26312f04cfc21e3ace285fb45ccb9a98447))
+
 ### [1.0.15](https://github.com/seadfeng/headless-browser-clusters/compare/v1.0.14...v1.0.15) (2025-02-22)
 
 ### [1.0.14](https://github.com/seadfeng/headless-browser-clusters/compare/v1.0.13...v1.0.14) (2025-02-22)

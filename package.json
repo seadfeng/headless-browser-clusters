@@ -4,6 +4,7 @@
   "scripts": {
     "app:dev": "npm run start && cd ./app && npm run dev",
     "app:build": "cd ./app && npm run docker:build",
+    "app:chromium:install": "cd ./app && npx playwright install-deps chromium",
     "browser:build": "cd ./browser && npm run docker:build",
     "build": "npm run app:build && npm run browser:build",
     "start": "cd .docker/compose && docker compose up -d",

@@ -6,7 +6,8 @@
 # create .env
 cp ./app/.env.example ./app/.env
 
-npx playwright install-deps chromium
+# install chromium for test
+npm run app:chromium:install
 
 # start
 npm run app:dev

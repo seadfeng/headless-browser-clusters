@@ -1,4 +1,4 @@
-FROM node:18-slim AS base
+FROM node:20-slim AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -23,7 +23,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN npm install
+RUN npm run build
 RUN ls -la
  
 # Production image, copy all the files and run next

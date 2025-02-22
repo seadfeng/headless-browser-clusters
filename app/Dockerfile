@@ -2,23 +2,25 @@ FROM node:20-slim AS base
 
 # Install dependencies only when needed
 FROM base AS deps
-
 WORKDIR /app
 
-RUN node -v
+RUN uname -m
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/* \
+    && if [ "$(uname -m)" = "aarch64" ]; then \
+         npm install --platform=linux --arch=arm64 @rollup/rollup-linux-arm64-gnu; \
+       elif [ "$(uname -m)" = "x86_64" ]; then \
+         npm install --platform=linux --arch=x64 @rollup/rollup-linux-x64-gnu; \
+       fi
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN ls -la
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+COPY package*.json ./
+RUN npm install --no-optional
 
 # Rebuild the source code only when needed
-FROM base AS builder
+FROM deps AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -32,8 +34,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 express
+RUN groupadd -r -g 1001 nodejs
+RUN useradd -r -u 1001 -g nodejs express
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
@@ -42,4 +44,4 @@ ENV HOST=0.0.0.0
 ENV PORT=3000
 EXPOSE 3000
 
-CMD ["node", "dist/index.js"] 
+CMD ["node", "dist/index.js"]

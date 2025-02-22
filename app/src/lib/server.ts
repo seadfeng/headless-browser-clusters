@@ -140,8 +140,6 @@ async function executeTask({
     } finally {
       await page.close();
       await context.close();
-      console.info("page close");
-      console.info("context close");
     }
   } catch (error) {
     const message = (error as Error)?.message ?? "unknown error";

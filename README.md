@@ -9,6 +9,17 @@ cp ./app/.env.example ./app/.env
 npm run app:dev
 ```
 
+### headless: false for Development
+
+```bash
+curl -X POST http://127.0.0.1:3001/api/v1/fetch-dev \
+     -H "Content-Type: application/json" \
+     -H "X-Api-key: your_api_key" \
+     -d '{ 
+           "url": "https://api.ipify.org/?format=jsonp"
+         }'
+```
+
 ## Local Build
 
 ```bash
@@ -34,10 +45,21 @@ cd .docker/compose && docker compose up -d
 
 
 ### curl test
- 
+
 
 ```bash
-curl -X POST http://127.0.0.1:3010/api/v1/fetch \
+curl -X POST http://127.0.0.1:3100/api/v1/fetch \
+     -H "Content-Type: application/json" \
+     -H "X-Api-key: your_api_key" \
+     -d '{ 
+           "url": "https://api.ipify.org/?format=jsonp"
+         }'
+```
+
+curl with proxy
+
+```bash
+curl -X POST http://127.0.0.1:3100/api/v1/fetch \
      -H "Content-Type: application/json" \
      -H "X-Api-key: your_api_key" \
      -d '{ 

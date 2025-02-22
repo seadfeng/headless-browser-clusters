@@ -6,35 +6,44 @@ import { fetchParamsSchema } from "zod-schema";
 export const fetchTask = async (req: Request, res: Response) => {
   try {
     const { url, locale = "en-US", proxy } = fetchParamsSchema.parse(req.body);
-
-    let browserId: string | null = null;
+    await BrowserManager.init();
     let status = 500;
     let html = "";
     try {
-      browserId = await BrowserManager.getAvailableBrowser();
-      if (!browserId) {
-        return res.status(503).send("browserId not found");
-      }
-      const browser = await BrowserManager.getBrowser(browserId);
+      const browser = await BrowserManager.getBrowser();
 
-      const result = await executeTask({ url, browser, locale, proxy });
+      let retry = 0;
 
-      if (result.headers) {
-        Object.entries(result.headers).forEach(([key, value]) => {
-          res.setHeader(key, value);
+      while (retry <= 3) {
+        const result = await executeTask({
+          url,
+          browser,
+          locale,
+          proxy,
         });
+        if (result.status === 429) {
+          retry += 1;
+          console.warn("Retry... ", retry);
+          continue;
+        }
+        if (result.status !== 200) {
+          throw new Error(`unkown error, result.status: ${result.status}`);
+        }
+
+        retry = 10;
+        if (result.headers) {
+          Object.entries(result.headers).forEach(([key, value]) => {
+            res.setHeader(key, value);
+          });
+        }
+
+        status = result.status;
+        html = result.html;
       }
-
-      status = result.status;
-      html = result.html;
-
-      // return res.status(status).json(result);
     } catch (error) {
       console.error("Task execution failed:", error);
       status = 500;
-      html = "Task execution failed" + ((error as Error)?.message ?? "");
-    } finally {
-      await BrowserManager.releaseBrowser(browserId);
+      html = "Task execution failed.\n" + ((error as Error)?.message ?? "");
     }
 
     return res.status(status).send(html);

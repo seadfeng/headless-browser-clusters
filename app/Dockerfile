@@ -5,19 +5,9 @@ FROM base AS deps
 WORKDIR /app
 
 RUN uname -m
-RUN apt-get update && apt-get install -y \
-    python3 \
-    make \
-    g++ \
-    && rm -rf /var/lib/apt/lists/* \
-    && if [ "$(uname -m)" = "aarch64" ]; then \
-         npm install --platform=linux --arch=arm64 @rollup/rollup-linux-arm64-gnu; \
-       elif [ "$(uname -m)" = "x86_64" ]; then \
-         npm install --platform=linux --arch=x64 @rollup/rollup-linux-x64-gnu; \
-       fi
 
-COPY package*.json ./
-RUN npm install --no-optional
+COPY package.json ./
+RUN npm install
 
 # Rebuild the source code only when needed
 FROM deps AS builder

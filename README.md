@@ -15,7 +15,7 @@ npm run app:dev
 ### headless: false for Development
 
 ```bash
-curl --proxy "" -X POST http://127.0.0.1:3001/api/v1/fetch-dev \
+curl --proxy "" -X POST http://127.0.0.1:3000/api/v1/fetch-dev \
      -H "Content-Type: application/json" \
      -H "X-Api-key: your_api_key" \
      -d '{ 

@@ -87,7 +87,7 @@ async function executeTask({
 
     try {
       const response = await page.goto(url, {
-        waitUntil: "networkidle",
+        waitUntil: "domcontentloaded",
       });
 
       if (!response) {
